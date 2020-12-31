@@ -111,9 +111,7 @@ while True:
     cont = getContours(imDil, imCopy, rectangles)
     # sortRectangles()
     count = 0
-    for rectangle in rectangles:
-        cv2.putText(cont, str(count), (rectangle[0], rectangle[1]), cv2.FONT_HERSHEY_COMPLEX, 0.5, (0, 255, 0, 255), 1)
-        count += 1
+
 
 
     cv2.imshow("lol", cont)

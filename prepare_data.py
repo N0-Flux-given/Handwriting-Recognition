@@ -3,24 +3,20 @@ import numpy as np
 import matplotlib.pyplot as plt
 import os
 
-rectangles = []
 abc = "abcdefghijklmnopqrstuvwxyz"
 
 
 def getContours(img, output, path, img_to_slice):
-    rectangles.clear()
     contours, hierarchy = cv2.findContours(img, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
     print(len(contours))
     count = 0
     for cnt in contours:
         area = cv2.contourArea(cnt)
-        tk3 = cv2.getTrackbarPos("t3", "Params")
-        if area > tk3:
+        if area > 29:
             # cv2.drawContours(output, cnt, -1, (0, 0, 255), 2)
             peri = cv2.arcLength(cnt, True)
             approx = cv2.approxPolyDP(cnt, 0.02 * peri, True)
             x_, y_, w_, h_ = cv2.boundingRect(approx)
-            rectangles.append((x_, y_, w_, h_))
             cv2.rectangle(output, (x_, y_), (x_ + w_, y_ + h_), (0, 0, 255), 2)
 
             filename = f"{count}.jpg"
@@ -34,6 +30,7 @@ def getContours(img, output, path, img_to_slice):
     return output
 
 
+# Segment the main training image into individual alphabets
 for char in abc:
     path = f"Training/{char}"
     os.mkdir(path)
@@ -49,7 +46,6 @@ for char in abc:
     cont = getContours(imDil, imCopy, path, strip_img)
     cv2.imshow("lol", imCopy)
     cv2.waitKey(0)
-
 
 
 
